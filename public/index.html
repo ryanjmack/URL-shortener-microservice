@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="utf-8">
+	<meta name="author" content="Ryan Mack">
+	<meta name="description" content="A URL Shortener Microservice">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Request Header Microservice</title>
+	<link rel="stylesheet" href="/stylesheets/css/styles.css">
+</head>
+
+<body>
+  <main>
+    <h1>URL Shortener Microservice</h1>
+    <h2>Documentation</h2>
+    <ul>
+      <li>Valid URLs can be sent (via <b>POST</b>) to to <span class="code">/api/shorturl/new</span> and the server will respond with a JSON object with the shortened URL</li>
+			<li>The server will handle invalid URLs by responding with a JSON object containing an error message</li>
+    </ul>
+		<section class="form">
+			<form action="api/shorturl/new" method="post">
+				<label for="url">URL to be shortened: </label>
+				<input type="text" name="url" value="https://www.google.com/">
+				<button type="submit" name="button">Submit</button>
+			</form>
+		</section>
+    <section class="example">
+      <h3>Example of usage</h3>
+      <p>POST 'https://www.google.com/' to <span class="code">/api/shorturl/new</span>, which will provide a shortened url that will redirect to google</p>
+      <h3>Example Output (<b>JSON</b>)</h3>
+      <p class="code">{<br><span class="code__indent">"url": "https://www.google.com/",</span><br><span class="code__indent">"short_url": "[this_project_url]/api/shorturl/1"</span><br>}</p>
+    </section>
+  </main>
+</body>
+</html>
