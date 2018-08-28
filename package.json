@@ -1,7 +1,7 @@
 {
-  "name": "request-header-microservice",
+  "name": "URL-Shortener",
   "version": "1.0.0",
-  "description": "Displays http request header data",
+  "description": "Shortens a URL, storing it in a mongodb database",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
