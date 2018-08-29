@@ -1,3 +1,6 @@
+//
+require('dotenv').config()
+
 const PORT    = Number(process.env.PORT || 3000);
 const express = require('express');
 const app     = express();
@@ -11,6 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 
 
+// Routes
 app.get('/', (req, res) => {
   res.sendFile('index.html');
 });
