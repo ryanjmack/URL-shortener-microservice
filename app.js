@@ -47,10 +47,16 @@ app.get('/', (req, res) => {
 
 // user wants to be redirected to a short url
 app.get('/api/shorturl/:id?', (req, res) => {
-  // TODO: query DB with id of the shorturl and redirect the user to it
-
-  console.log(req.params.id);
-  res.sendFile('index.html', {root: __dirname + '/public'});
+  urlModel.findOne({
+      short_url: `api/shorturl/${req.params.id}`
+    })
+    .then(data => {
+      console.log(data);
+      res.redirect(data.url);
+    })
+    .catch(err => {
+      res.status(400).send("Invalid URL");
+    });
 });
 
 
