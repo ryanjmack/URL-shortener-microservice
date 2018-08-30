@@ -62,10 +62,60 @@ app.get('/api/shorturl/:id?', (req, res) => {
 
 // user wants to shorten a url
 app.post('/api/shorturl/new', (req, res) => {
-  const postBody = req.body.url;
+  // standardize urls. should all be prefaced with 'https://'
+  let url = req.body.url;
+  const https = 'https://';
+  const http = /^http:\/\//i;
+  if (http.test(url)) {
+    url = url.replace(http, https);
+  }
+  else if (url.indexOf(https) === -1) {
+    url = https + url;
+  }
 
-  // Return the POST message
-  res.send(postBody);
+  // chop off trailing slashes
+  let back  = /\/$/;
+  url = url.replace(back, '');
+
+  urlModel.findOne({"url": url}, (err, result) => {
+    if (result) {
+      let display = {
+        url: result.url,
+        short_url: result.short_url
+      };
+      res.json(display);
+    }
+
+    else {
+      let id;
+      urlModel.countDocuments({}, (err, count) => {
+        id = count + 1;
+      })
+      .then(() => {
+        urlExists(url)
+          .then(response => {
+            const doc = new urlModel({url, short_url: `api/shorturl/${id}`});
+            doc.save()
+                .then(result => {
+                    console.log(result.id);  // this will be the new created ObjectId
+                })
+                .catch(err => {
+                  res.send("There was an issue saving the data to the database.");
+                });
+
+            let display = {
+              url: doc.url,
+              short_url: doc.short_url
+            };
+            res.json(display);
+          })
+          .catch(err => {
+            res.send(`Error. The URL "${url}" doesn\'t exist, the site is down or the site has security issues.`);
+          });
+      });
+    } // end else block
+
+  });
 });
 
 
