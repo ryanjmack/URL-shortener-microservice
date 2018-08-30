@@ -1,35 +1,64 @@
-//
+/***********************************************************************
+* Configuration
+***********************************************************************/
+// .env file to connect to mongoose
 require('dotenv').config()
 
-const PORT    = Number(process.env.PORT || 3000);
-const express = require('express');
-const app     = express();
+
+// Schema for the URL model
+const urlModel = require('./models/urls.js');
+
+
+// Connect to database
+const mongoose = require('mongoose');
+mongoose.connect(process.env.DB_URI, { useNewUrlParser: true });
+
+
+// test database connection
+const db = mongoose.connection;
+db.on('err', (err) => console.log("Connection Error.\n", err));
+db.once('open', () => console.log('Connected to database.\n'));
+
+
+// App dependencies
+const PORT      = Number(process.env.PORT || 3000);
+const express   = require('express');
+const app       = express();
+const urlExists = require('url-exists-deep');
+
 
 // bodyParser for POST requests
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
 // middleware for serving static files
 app.use(express.static(__dirname + '/public'));
 
 
-// Routes
+/***********************************************************************
+* Routes
+***********************************************************************/
 app.get('/', (req, res) => {
   res.sendFile('index.html');
 });
 
 
+// user wants to be redirected to a short url
 app.get('/api/shorturl/:id?', (req, res) => {
   // TODO: query DB with id of the shorturl and redirect the user to it
+
   console.log(req.params.id);
   res.sendFile('index.html', {root: __dirname + '/public'});
 });
 
 
+// user wants to shorten a url
 app.post('/api/shorturl/new', (req, res) => {
   const postBody = req.body.url;
-    // Return the POST message
+
+  // Return the POST message
   res.send(postBody);
 });
 
