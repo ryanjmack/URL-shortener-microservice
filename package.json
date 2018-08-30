@@ -19,6 +19,7 @@
     "gulp-sass": "^4.0.1",
     "gulp-sourcemaps": "^2.6.4",
     "mongodb": "^3.1.4",
-    "mongoose": "^5.2.10"
+    "mongoose": "^5.2.10",
+    "url-exists-deep": "^1.1.1"
   }
 }
